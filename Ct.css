@@ -1,0 +1,275 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    margin: 0;
+    padding: 40px 20px;
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    margin-top: 0;
+    letter-spacing: 2px;
+}
+
+h3 {
+    color: #a8c0ff;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    text-shadow: 0 0 5px rgba(168, 192, 255, 0.3);
+}
+
+.tool-section {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10px;
+    color: #bdc3c7;
+    letter-spacing: 1px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+}
+
+input[type="text"]:focus {
+    border-color: #00d2ff;
+    outline: none;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s, transform 0.1s;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.btn-email {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+}
+
+.btn-email:hover {
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
+    box-shadow: 0 6px 20px rgba(0, 114, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-reverse {
+    background: linear-gradient(45deg, #f12711, #f5af19);
+    box-shadow: 0 4px 15px rgba(241, 39, 17, 0.4);
+}
+
+.btn-reverse:hover {
+    background: linear-gradient(45deg, #f5af19, #f12711);
+    box-shadow: 0 6px 20px rgba(241, 39, 17, 0.6);
+    transform: translateY(-2px);
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    margin: 50px 0;
+}
+
+.result-box {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 5px solid #ccc;
+    display: none;
+    animation: fadeIn 0.5s ease;
+    backdrop-filter: blur(5px);
+}
+
+#emailResults {
+    border-left-color: #00d2ff;
+    background: linear-gradient(90deg, rgba(0, 210, 255, 0.1), transparent);
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+}
+
+#reverseResults {
+    border-left-color: #f5af19;
+    background: linear-gradient(90deg, rgba(245, 175, 25, 0.1), transparent);
+    box-shadow: 0 0 15px rgba(245, 175, 25, 0.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h4 {
+    margin-top: 0;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.stat-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-item {
+    text-align: center;
+    font-size: 1.1em;
+    color: #bdc3c7;
+}
+
+.count-green {
+    color: #00ff88;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+.count-red {
+    color: #ff4b4b;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 75, 75, 0.4);
+}
+
+ul {
+    padding-left: 0;
+    margin: 15px 0;
+}
+
+.email-list.valid li {
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    background: rgba(0, 255, 136, 0.05);
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    list-style-type: none;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    transition: all 0.2s;
+}
+
+.email-list.valid li:hover {
+    background: rgba(0, 255, 136, 0.1);
+    transform: translateX(5px);
+}
+
+.email-list.invalid li {
+    color: #ff4b4b;
+    font-family: 'Courier New', monospace;
+    background: rgba(255, 75, 75, 0.05);
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    list-style-type: none;
+    border: 1px solid rgba(255, 75, 75, 0.2);
+    transition: all 0.2s;
+}
+
+.email-list.invalid li:hover {
+    background: rgba(255, 75, 75, 0.1);
+    transform: translateX(5px);
+}
+
+.domain-list li {
+    background: rgba(255, 255, 255, 0.1);
+    margin: 6px;
+    padding: 6px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 0.9em;
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    color: #a8c0ff;
+    transition: all 0.2s;
+}
+
+.domain-list li:hover {
+    background: rgba(0, 210, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.reverse-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.reverse-item:last-child {
+    border-bottom: none;
+}
+
+.code-text {
+    display: block;
+    background: rgba(0, 0, 0, 0.4);
+    color: #00ff88;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    word-break: break-all;
+    margin-top: 10px;
+    font-size: 0.95em;
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.error {
+    color: #ff4b4b;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(255, 75, 75, 0.5);
+    background: rgba(255, 75, 75, 0.1);
+    padding: 10px;
+    border-radius: 6px;
+}   
