@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cyan Data Extractor</title>
+<style>
+body { 
+    font-family: 'Courier New', Courier, monospace; 
+    margin: 20px; 
+    background-color: #e0ffff; 
+    color: #008b8b; 
+}
+h2 {
+    text-align: center;
+    text-shadow: 0 0 10px #00ced1, 0 0 20px #00ced1;
+    color: #008b8b;
+}
+textarea { 
+    width: 100%; 
+    height: 150px; 
+    background: #ffffff; 
+    border: 2px solid #00ced1; 
+    color: #008b8b; 
+    padding: 10px; 
+    box-sizing: border-box;
+    box-shadow: 0 0 10px #00ced1, inset 0 0 5px #e0ffff;
+    outline: none;
+    font-family: inherit;
+}
+textarea:focus {
+    box-shadow: 0 0 20px #00ced1, inset 0 0 10px #e0ffff;
+    border-color: #00ffff;
+}
+button { 
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px; 
+    background: #ffffff; 
+    color: #008b8b; 
+    border: 2px solid #00ced1; 
+    font-size: 1.2em; 
+    font-weight: bold;
+    cursor: pointer; 
+    text-transform: uppercase;
+    box-shadow: 0 0 10px #00ced1, inset 0 0 5px #e0ffff;
+    transition: all 0.3s;
+}
+button:hover {
+    background: #00ced1;
+    color: #ffffff;
+    box-shadow: 0 0 30px #00ffff, inset 0 0 10px #00ffff;
+    border-color: #00ffff;
+}
+#output { 
+    margin-top: 20px; 
+    border: 2px solid #008b8b; 
+    padding: 20px; 
+    background: #ffffff; 
+    box-shadow: 0 0 15px #00ced1, inset 0 0 10px #e0ffff;
+    color: #008b8b;
+}
+.error { 
+    color: #ff4500; 
+    text-shadow: 0 0 5px #ff4500; 
+    font-weight: bold;
+}
+.success { 
+    color: #006400; 
+    text-shadow: 0 0 5px #00ff00; 
+    font-weight: bold;
+}
+label { 
+    font-weight: bold; 
+    color: #008b8b;
+    text-shadow: 0 0 5px #00ced1;
+}
+p {
+    border-bottom: 1px dashed #afeeee;
+    padding-bottom: 5px;
+}
+</style>
+</head>
+<body>
+<h2>    Student Data Processor</h2>
+<textarea id="inputText" placeholder="Paste student data here (e.g., Student Name: John...)"></textarea>
+<button onclick="processData()">Process Data</button>
+<div id="output"></div>
+
+<script>
+function processData() {
+const text = document.getElementById("inputText").value;
+if(!text.trim()) {
+    document.getElementById("output").innerHTML = "<p style='color:#ff4500; text-shadow:0 0 5px #ff4500;'>Please enter some data first!</p>";
+    return;
+}
+const nameRegex = /Student Name:\s*([A-Za-z\s]+)/i;
+const rollRegex = /Roll Number:\s*(\d+)/i;
+const emailRegex = /Email:\s*([^\s]+)/i;
+const phoneRegex = /Phone:\s*(\d+)/i;
+const deptRegex = /Department:\s*([A-Za-z\s]+)/i;
+const nameMatch = text.match(nameRegex);
+const rollMatch = text.match(rollRegex);
+const emailMatch = text.match(emailRegex);
+const phoneMatch = text.match(phoneRegex);
+const deptMatch = text.match(deptRegex);
+const studentName = nameMatch ? nameMatch[1].trim() : "Not found";
+const rollNumber = rollMatch ? rollMatch[1] : "Not found";
+const emailAddress = emailMatch ? emailMatch[1] : "Not found";
+const phoneNumber = phoneMatch ? phoneMatch[1] : "Not found";
+const department = deptMatch ? deptMatch[1].trim() : "Not found";
+const emailValidationRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const isEmailValid = emailValidationRegex.test(emailAddress);
+const emailStatus = isEmailValid ? "Valid" : "Invalid";
+const isPhoneValid = /^\d{10}$/.test(phoneNumber);
+const phoneStatus = isPhoneValid ? "Valid (10 digits)" : "Invalid (Must be 10 digits)";
+const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+const totalWords = words.length;
+const totalCharsNoSpace = text.replace(/\s+/g, "").length;
+const lowerCaseText = text.toLowerCase();
+const updatedText = lowerCaseText.replace(/computer science/g, "information technology");
+let outputHTML = "<h3 style='color:#008b8b; text-shadow:0 0 10px #00ced1;'>Extracted Information</h3>";
+outputHTML += "<p><label>Student Name:</label> " + studentName + "</p>";
+outputHTML += "<p><label>Roll Number:</label> " + rollNumber + "</p>";
+outputHTML += "<p><label>Email Address:</label> " + emailAddress + " <span class='" + (isEmailValid ? "success" : "error") + "'>(" + emailStatus + ")</span></p>";
+outputHTML += "<p><label>Phone Number:</label> " + phoneNumber + " <span class='" + (isPhoneValid ? "success" : "error") + "'>(" + phoneStatus + ")</span></p>";
+outputHTML += "<p><label>Department:</label> " + department + "</p>";
+outputHTML += "<h3 style='color:#008b8b; text-shadow:0 0 10px #00ced1;'>Text Statistics</h3>";
+outputHTML += "<p><label>Total Words:</label> " + totalWords + "</p>";
+outputHTML += "<p><label>Total Characters (no spaces):</label> " + totalCharsNoSpace + "</p>";
+outputHTML += "<h3 style='color:#008b8b; text-shadow:0 0 10px #00ced1;'>Processed Text</h3>";
+outputHTML += "<p><label>Lowercase & Updated:</label><br><span style='color:#5f9ea0;'>" + updatedText.replace(/\n/g, "<br>") + "</span></p>";
+document.getElementById("output").innerHTML = outputHTML;
+}
+</script>
+</body>
+</html>   
