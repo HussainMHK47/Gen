@@ -1,0 +1,101 @@
+// === 1. INPUT SELECTION ===
+// These lines find and grab the HTML elements from your webpage so JavaScript can use them.
+const todoInput = document.getElementById('todo-input'); // The text box where you type
+const addBtn = document.getElementById('add-btn');       // The 'Add' button
+const todoList = document.getElementById('todo-list');   // The <ul> list container where tasks go
+
+// === 2. EVENT LISTENERS (TRIGGERS) ===
+// This triggers the addTask function when you click the 'Add' button.
+addBtn.addEventListener('click', addTask);
+
+// This triggers the addTask function if you press the 'Enter' key inside the text box.
+todoInput.value = ''; // Clears the text box so it is fresh for the next task
+
+todoInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        addTask();
+    }
+});
+
+// === 3. CORE LOGIC FUNCTION ===
+// This function runs to handle taking input, processing it, and showing the output.
+function addTask() {
+    // --- STEP A: TAKE INPUT ---
+    // Reads what you typed and trims off any accidental blank spaces at the start or end.
+    const taskText = todoInput.value.trim();
+    
+    // If the input is completely empty, stop right here and do nothing.
+    if (taskText === '') return;
+
+    // --- STEP B: PROCESSING (BUILDING THE TASK) ---
+    // Creates a new blank list item (<li>) in the background memory.
+    const li = document.createElement('li');
+
+    // Creates a <span> tag to hold your actual task text, styles it, and injects your text.
+    const textSpan = document.createElement('span');
+    textSpan.classList.add('task-text');
+    textSpan.innerText = taskText;
+
+    // Creates a <div> container to hold the action buttons together.
+    const actionsDiv = document.createElement('div');
+    actionsDiv.classList.add('actions');
+
+    // Creates the 'Edit' button and sets its initial text.
+    const editBtn = document.createElement('button');
+    editBtn.classList.add('edit-btn');
+    editBtn.innerText = 'Edit';
+
+    // Creates the 'Delete' button and sets its initial text.
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.innerText = 'Delete';
+
+    // --- STEP C: ASSEMBLING ---
+    // Puts both buttons inside the buttons container (<div>).
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
+    
+    // Puts the text and the buttons container inside the main list item (<li>).
+    li.appendChild(textSpan);
+    li.appendChild(actionsDiv);
+    
+    // --- STEP D: OUTPUT ---
+    // Injects the fully built list item onto your visible webpage inside the todoList.
+    todoList.appendChild(li);
+
+    // Clears out the text box on your screen so it is empty again.
+    todoInput.value = '';
+
+    // --- STEP E: MANAGING STATE (DELETE & EDIT BUTTONS) ---
+    
+    // DELETE LOGIC: Listens for a click on this specific task's delete button.
+    deleteBtn.addEventListener('click', function () {
+        // Navigates up from the button, past the div, to target the entire <li> element.
+        const itemToDelete = this.parentElement.parentElement;
+        // Removes that entire <li> element from the webpage.
+        todoList.removeChild(itemToDelete);
+    });
+
+    // EDIT LOGIC: Listens for a click on this specific task's edit button.
+    editBtn.addEventListener('click', function () {
+        // Finds the main <li> element and looks inside it to locate the text <span>.
+        const itemToEdit = t    his.parentElement.parentElement;
+        const span = itemToEdit.querySelector('.task-text');
+        
+        // IF THE BUTTON SAYS 'EDIT': Turn on typing mode.
+        if (this.innerText === 'Edit') {
+            span.contentEditable = true; // Unlocks the text so you can type directly into it
+            span.focus();                // Automatically places your flashing cursor there
+            this.innerText = 'Save';     // Changes the button text to 'Save'
+            this.style.backgroundColor = '#007bff'; // Changes button color to blue
+            this.style.color = 'white';
+            
+        // IF THE BUTTON SAYS 'SAVE': Turn off typing mode and save the changes.
+        } else {
+            span.contentEditable = false; // Locks the text back down so it cannot be edited
+            this.innerText = 'Edit';      // Changes the button text back to 'Edit'
+            this.style.backgroundColor = '#ffc107'; // Changes button color back to yellow
+            this.style.color = '#212529';
+        }
+    });
+}
