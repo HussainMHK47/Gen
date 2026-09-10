@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpenrose Hotel – Switzerland</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══════ NAVBAR ═══════ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">🏔️ Alpen<span>rose</span></a>
+    <div class="nav-links">
+      <a href="#booking">Book a Room</a>
+      <a href="#shop">Hotel Shop</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to <span>Alpenrose</span><br>Switzerland's Coziest Hotel</h1>
+    <p>Nestled in the Swiss Alps. Book your stay & browse our local shop.</p>
+    <a href="#booking" class="hero-btn">Book Your Stay →</a>
+  </div>
+</section>
+
+<!-- ═══════ BOOKING FORM ═══════ -->
+<section class="section" id="booking">
+  <div class="section-header">
+    <h2>Reserve Your <span>Room</span></h2>
+    <p>Fill in your details to book your alpine getaway</p>
+  </div>
+  <div class="form-card">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div id="bar"></div></div>
+      <span class="progress-text" id="progressText">0/7 completed</span>
+    </div>
+    <form id="gymForm" novalidate>
+      <div class="group" id="g-name">
+        <label>Full Name</label>
+        <input type="text" id="name" placeholder="e.g. Anna Müller" autocomplete="off">
+        <span class="err-msg" id="e-name"></span>
+        <span class="ok-msg">✓ Looks good</span>
+      </div>
+      <div class="row">
+        <div class="group" id="g-guests">
+          <label>Guests</label>
+          <input type="number" id="age" placeholder="1–6" min="1" max="6">
+          <span class="err-msg" id="e-age"></span>
+          <span class="ok-msg">✓ Valid</span>
+        </div>
+        <div class="group" id="g-type">
+          <label>Room Type</label>
+          <select id="gender">
+            <option value="">Select</option>
+            <option>Single Room</option>
+            <option>Double Room</option>
+            <option>Family Suite</option>
+            <option>Alpine Penthouse</option>
+          </select>
+          <span class="err-msg" id="e-gender"></span>
+          <span class="ok-msg">✓ Selected</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="group" id="g-phone">
+          <label>Phone</label>
+          <input type="tel" id="phone" placeholder="10-digit number" maxlength="10" inputmode="numeric">
+          <span class="err-msg" id="e-phone"></span>
+          <span class="ok-msg">✓ Valid</span>
+        </div>
+        <div class="group" id="g-email">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="off">
+          <span class="err-msg" id="e-email"></span>
+          <span class="ok-msg">✓ Valid</span>
+        </div>
+      </div>
+      <div class="group" id="g-plan">
+        <label>Stay Duration</label>
+        <select id="plan">
+          <option value="">Choose duration</option>
+          <option value="1night">1 Night – ₹12,999</option>
+          <option value="3night">3 Nights – ₹32,999</option>
+          <option value="7night">7 Nights – ₹69,999</option>
+          <option value="14night">14 Nights – ₹129,999</option>
+        </select>
+        <span class="err-msg" id="e-plan"></span>
+        <span class="ok-msg">✓ Selected</span>
+      </div>
+      <div class="group" id="g-address">
+        <label>Special Requests</label>
+        <textarea id="address" rows="3" placeholder="Dietary needs, accessibility, celebrations…"></textarea>
+        <span class="err-msg" id="e-address"></span>
+        <span class="ok-msg">✓ Filled</span>
+      </div>
+      <button type="submit" class="btn-primary">Book My Stay</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════ HOTEL SHOP ═══════ -->
+<section class="section" id="shop">
+  <div class="section-header">
+    <h2>Alpine <span>Shop</span></h2>
+    <p>Take a piece of Switzerland home with you</p>
+  </div>
+  <div class="shop-card">
+    <form id="productForm">
+      <div class="filter-bar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search products…" autocomplete="off">
+        </div>
+        <select id="categorySelect">
+          <option value="">All Categories</option>
+          <option value="Swiss Sweets">Swiss Sweets</option>
+          <option value="Cheese">Cheese</option>
+          <option value="Spa">Spa & Wellness</option>
+          <option value="Souvenirs">Souvenirs</option>
+        </select>
+        <button type="button" id="clearBtn" class="btn-clear">✕ Clear</button>
+      </div>
+    </form>
+    <p class="filter-error" id="filterError"></p>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════ CART BAR ═══════ -->
+<div class="cart-bar" id="cartBar">
+  <span class="cart-icon">🛒 <span id="cartCount">0</span></span>
+  <span class="cart-total">Total: ₹<span id="cartTotal">0</span></span>
+  <button class="btn-checkout" id="checkoutBtn">Checkout</button>
+</div>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="footer">
+  <p>🏔️ Alpenrose Hotel · Grindelwald, Switzerland · Est. 1923</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>   
