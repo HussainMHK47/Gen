@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>localStorage and SessionStorage</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --card-bg: #f5f5f5;
+      --accent: #4a90d9;
+    }
+    :root[data-theme="dark"] {
+      --bg: #1a1a2e;
+      --text: #e0e0e0;
+      --card-bg: #16213e;
+      --accent: #7c9ce0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 32px;
+      width: 340px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 { margin-top: 0; }
+    label { display: block; margin: 16px 0 6px; font-weight: 600; }
+    select, input[type="range"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: var(--bg);
+      color: var(--text);
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    button:hover { opacity: 0.85; }
+    .row { display: flex; gap: 10px; }
+    .row button { flex: 1; }
+    #fontSizeValue { text-align: center; margin-top: 4px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Preferences</h2>
+
+    <label for="theme">Theme</label>
+    <select id="theme">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+
+    <label for="fontSize">Font Size: <span id="fontSizeValue">16px</span></label>
+    <input type="range" id="fontSize" min="12" max="28" value="16" />
+
+    <label for="language">Language</label>
+    <select id="language">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="es">Español</option>
+    </select>
+
+    <div class="row">
+      <button id="saveBtn">Save</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    const themeSelect = document.getElementById("theme");
+    const fontSizeInput = document.getElementById("fontSize");
+    const fontSizeValue = document.getElementById("fontSizeValue");
+    const languageSelect = document.getElementById("language");
+    const saveBtn = document.getElementById("saveBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+
+    function applyFontSize(size) {
+      document.body.style.fontSize = size + "px";
+      fontSizeValue.textContent = size + "px";
+    }
+
+    function savePreferences() {
+      const prefs = {
+        theme: themeSelect.value,
+        fontSize: fontSizeInput.value,
+        language: languageSelect.value
+      };
+      localStorage.setItem("userPrefs", JSON.stringify(prefs));
+      sessionStorage.setItem("userPrefs", JSON.stringify(prefs));
+    }
+
+    function loadPreferences() {
+      const raw = localStorage.getItem("userPrefs") || sessionStorage.getItem("userPrefs");
+      if (raw) {
+        const prefs = JSON.parse(raw);
+        themeSelect.value = prefs.theme || "light";
+        fontSizeInput.value = prefs.fontSize || 16;
+        languageSelect.value = prefs.language || "en";
+        applyTheme(themeSelect.value);
+        applyFontSize(fontSizeInput.value);
+      } else {
+        applyTheme("light");
+        applyFontSize(16);
+      }
+    }
+
+    function resetPreferences() {
+      localStorage.removeItem("userPrefs");
+      sessionStorage.removeItem("userPrefs");
+      themeSelect.value = "light";
+      fontSizeInput.value = 16;
+      languageSelect.value = "en";
+      applyTheme("light");
+      applyFontSize(16);
+    }
+
+    saveBtn.addEventListener("click", savePreferences);
+    resetBtn.addEventListener("click", resetPreferences);
+
+    themeSelect.addEventListener("change", () => {
+      applyTheme(themeSelect.value);
+      savePreferences();
+    });
+
+    fontSizeInput.addEventListener("input", () => {
+      applyFontSize(fontSizeInput.value);
+    });
+
+    fontSizeInput.addEventListener("change", savePreferences);
+    languageSelect.addEventListener("change", savePreferences);
+
+    window.addEventListener("storage", (e) => {
+      if (e.key === "userPrefs" && e.newValue) {
+        const prefs = JSON.parse(e.newValue);
+        themeSelect.value = prefs.theme;
+        fontSizeInput.value = prefs.fontSize;
+        languageSelect.value = prefs.language;
+        applyTheme(prefs.theme);
+        applyFontSize(prefs.fontSize);
+      }
+    });
+
+    loadPreferences();
+  </script>
+</body>
+</html>   

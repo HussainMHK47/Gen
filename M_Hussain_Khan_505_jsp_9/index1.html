@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seminar Schedule Planner</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --text: #1a1a2e;
+      --card-bg: #ffffff;
+      --accent: #2c5f8a;
+      --accent-hover: #1e4a6e;
+      --border: #d1d9e6;
+      --header-bg: #2c5f8a;
+      --time-col: #e8f0f8;
+      --stripe: #f5f8fb;
+      --danger: #e74c3c;
+      --danger-hover: #c0392b;
+      --success: #27ae60;
+      --warning: #f39c12;
+    }
+    :root[data-theme="dark"] {
+      --bg: #0f1623;
+      --text: #e0e6ed;
+      --card-bg: #1a2332;
+      --accent: #5a9fd4;
+      --accent-hover: #3d7fb5;
+      --border: #2d3a4e;
+      --header-bg: #1e3a5f;
+      --time-col: #162535;
+      --stripe: #1e2d3f;
+      --danger: #e74c3c;
+      --danger-hover: #c0392b;
+      --success: #27ae60;
+      --warning: #f39c12;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 15px;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .top-bar h1 { font-size: 1.4rem; color: var(--accent); }
+    .prefs { display: flex; gap: 10px; align-items: center; }
+    .prefs select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+    }
+    .card h2 { margin-bottom: 16px; font-size: 1.15rem; color: var(--accent); }
+    .timetable {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .timetable thead th {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 14px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .timetable tbody td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .timetable tbody tr:nth-child(even) { background: var(--stripe); }
+    .timetable tbody tr:hover { background: var(--time-col); }
+    .time-cell {
+      background: var(--time-col);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent);
+      white-space: nowrap;
+      min-width: 110px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-badge.completed { background: #d4edda; color: #155724; }
+    .status-badge.pending { background: #fff3cd; color: #856404; }
+    .status-badge.in-progress { background: #cce5ff; color: #004085; }
+    :root[data-theme="dark"] .status-badge.completed { background: #1e3a2a; color: #7bc47f; }
+    :root[data-theme="dark"] .status-badge.pending { background: #3d3520; color: #e0c060; }
+    :root[data-theme="dark"] .status-badge.in-progress { background: #1a2e4a; color: #7ab3e0; }
+    .delete-btn {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .delete-btn:hover { background: var(--danger-hover); }
+    .add-btn {
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .add-btn:hover { background: var(--accent-hover); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr 1fr 120px auto;
+      gap: 10px;
+      margin-top: 16px;
+      align-items: end;
+    }
+    .form-row input, .form-row select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .form-row .confirm-btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 6px;
+      background: var(--success);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .form-row .confirm-btn:hover { opacity: 0.85; }
+    .alert-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 28px;
+      min-width: 300px;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 1000;
+    }
+    .alert-box.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+    .alert-box h3 { margin-bottom: 12px; color: var(--accent); font-size: 1.1rem; }
+    .alert-box p { line-height: 1.7; margin-bottom: 20px; font-size: 14px; }
+    .alert-box .btn-group { display: flex; gap: 10px; justify-content: center; }
+    .alert-box .btn-group button {
+      padding: 8px 22px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .alert-box .btn-confirm { background: var(--danger); color: #fff; }
+    .alert-box .btn-confirm:hover { background: var(--danger-hover); }
+    .alert-box .btn-cancel { background: var(--border); color: var(--text); }
+    .alert-box .btn-cancel:hover { opacity: 0.8; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      z-index: 999;
+    }
+    .overlay.active { opacity: 1; pointer-events: auto; }
+    .day-header {
+      background: var(--time-col);
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <h1>Seminar Schedule Planner</h1>
+      <div class="prefs">
+        <select id="theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Seminar Timetable</h2>
+      <table class="timetable" id="scheduleTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Session / Topic</th>
+            <th>Speaker</th>
+            <th>Room</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+      <button class="add-btn" id="addBtn">+ Add Session</button>
+      <div class="form-row" id="addForm" style="display:none;">
+        <input type="time" id="fTime" />
+        <input type="text" id="fTopic" placeholder="Topic" />
+        <input type="text" id="fSpeaker" placeholder="Speaker" />
+        <input type="text" id="fRoom" placeholder="Room" />
+        <select id="fStatus">
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+        <button class="confirm-btn" id="confirmAdd">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="alert-box" id="alertBox">
+    <h3 id="alertTitle"></h3>
+    <p id="alertMsg"></p>
+    <div class="btn-group">
+      <button class="btn-confirm" id="alertConfirm">Delete</button>
+      <button class="btn-cancel" id="alertCancel">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const themeSelect = document.getElementById("theme");
+    const scheduleBody = document.getElementById("scheduleBody");
+    const addBtn = document.getElementById("addBtn");
+    const addForm = document.getElementById("addForm");
+    const confirmAdd = document.getElementById("confirmAdd");
+    const overlay = document.getElementById("overlay");
+    const alertBox = document.getElementById("alertBox");
+    const alertTitle = document.getElementById("alertTitle");
+    const alertMsg = document.getElementById("alertMsg");
+    const alertConfirm = document.getElementById("alertConfirm");
+    const alertCancel = document.getElementById("alertCancel");
+
+    const defaultSchedule = [
+      { time: "09:00 - 09:30", topic: "Registration & Welcome", speaker: "Organizing Team", room: "Main Hall", status: "completed" },
+      { time: "09:30 - 10:00", topic: "Inaugural Address", speaker: "Dr. A. Sharma", room: "Main Hall", status: "completed" },
+      { time: "10:00 - 11:30", topic: "AI in Healthcare", speaker: "Prof. R. Mehta", room: "Main Hall", status: "in-progress" },
+      { time: "11:30 - 12:00", topic: "Tea Break", speaker: "—", room: "Lobby", status: "pending" },
+      { time: "12:00 - 13:30", topic: "Cloud Architecture Patterns", speaker: "Ms. P. Iyer", room: "Main Hall", status: "pending" },
+      { time: "13:30 - 14:30", topic: "Lunch Break", speaker: "—", room: "Cafeteria", status: "pending" },
+      { time: "14:30 - 16:00", topic: "DevOps & CI/CD Pipelines", speaker: "Mr. S. Kumar", room: "Main Hall", status: "pending" },
+      { time: "16:00 - 16:30", topic: "Q&A & Vote of Thanks", speaker: "Panel", room: "Main Hall", status: "pending" }
+    ];
+
+    let pendingDeleteIndex = -1;
+
+    function getSchedule() {
+      const raw = localStorage.getItem("seminarSchedule") || sessionStorage.getItem("seminarSchedule");
+      return raw ? JSON.parse(raw) : defaultSchedule;
+    }
+
+    function saveSchedule(data) {
+      const json = JSON.stringify(data);
+      localStorage.setItem("seminarSchedule", json);
+      sessionStorage.setItem("seminarSchedule", json);
+    }
+
+    function getPrefs() {
+      const raw = localStorage.getItem("userPrefs") || sessionStorage.getItem("userPrefs");
+      return raw ? JSON.parse(raw) : { theme: "light" };
+    }
+
+    function savePrefs() {
+      const prefs = { theme: themeSelect.value };
+      localStorage.setItem("userPrefs", JSON.stringify(prefs));
+      sessionStorage.setItem("userPrefs", JSON.stringify(prefs));
+    }
+
+    function applyPrefs(prefs) {
+      themeSelect.value = prefs.theme || "light";
+      document.documentElement.setAttribute("data-theme", themeSelect.value);
+    }
+
+    function renderTable() {
+      const data = getSchedule();
+      scheduleBody.innerHTML = "";
+      data.forEach((item, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="time-cell">${item.time}</td>
+          <td>${item.topic}</td>
+          <td>${item.speaker}</td>
+          <td>${item.room}</td>
+          <td><span class="status-badge ${item.status}">${item.status.replace("-", " ")}</span></td>
+          <td><button class="delete-btn" data-idx="${idx}">Delete</button></td>
+        `;
+        scheduleBody.appendChild(tr);
+      });
+      scheduleBody.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          pendingDeleteIndex = parseInt(btn.dataset.idx);
+          const item = getSchedule()[pendingDeleteIndex];
+          alertTitle.textContent = "Confirm Delete";
+          alertMsg.innerHTML = `Delete <strong>"${item.topic}"</strong><br>${item.time} — ${item.speaker}?`;
+          alertBox.classList.add("active");
+          overlay.classList.add("active");
+        });
+      });
+    }
+
+    function hideAlert() {
+      alertBox.classList.remove("active");
+      overlay.classList.remove("active");
+      pendingDeleteIndex = -1;
+    }
+
+    alertConfirm.addEventListener("click", () => {
+      if (pendingDeleteIndex >= 0) {
+        const data = getSchedule();
+        data.splice(pendingDeleteIndex, 1);
+        saveSchedule(data);
+        renderTable();
+      }
+      hideAlert();
+    });
+
+    alertCancel.addEventListener("click", hideAlert);
+    overlay.addEventListener("click", hideAlert);
+
+    addBtn.addEventListener("click", () => {
+      addForm.style.display = addForm.style.display === "none" ? "grid" : "none";
+    });
+
+    confirmAdd.addEventListener("click", () => {
+      const time = document.getElementById("fTime").value;
+      const topic = document.getElementById("fTopic").value.trim();
+      const speaker = document.getElementById("fSpeaker").value.trim();
+      const room = document.getElementById("fRoom").value.trim();
+      const status = document.getElementById("fStatus").value;
+      if (!time || !topic || !speaker || !room) {
+        alertTitle.textContent = "Error";
+        alertMsg.textContent = "Please fill all fields.";
+        alertBox.classList.add("active");
+        overlay.classList.add("active");
+        return;
+      }
+      const data = getSchedule();
+      data.push({ time, topic, speaker, room, status });
+      saveSchedule(data);
+      renderTable();
+      document.getElementById("fTime").value = "";
+      document.getElementById("fTopic").value = "";
+      document.getElementById("fSpeaker").value = "";
+      document.getElementById("fRoom").value = "";
+      document.getElementById("fStatus").value = "pending";
+      addForm.style.display = "none";
+    });
+
+    themeSelect.addEventListener("change", () => {
+      document.documentElement.setAttribute("data-theme", themeSelect.value);
+      savePrefs();
+    });
+
+    window.addEventListener("storage", (e) => {
+      if (e.key === "seminarSchedule" && e.newValue) renderTable();
+      if (e.key === "userPrefs" && e.newValue) applyPrefs(JSON.parse(e.newValue));
+    });
+
+    applyPrefs(getPrefs());
+    renderTable();
+  </script>
+</body>
+</html>   
