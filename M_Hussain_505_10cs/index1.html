@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Music Concert Registration</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00ffbf, #cf77fb);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #e3ff41;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
+        }
+        select option {
+            background-color: #1e1b4b;
+            color: #ffffff;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .checkbox-group input {
+            margin-top: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #a855f7, #ec4899);
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Concert Registration</h2>
+    <form id="registrationForm" action="/submit-registration" method="POST">
+        
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label for="ticket-type">Ticket Category</label>
+            <select id="ticket-type" name="ticket_type" required>
+                <option value="" disabled selected>Select your ticket</option>
+                <option value="general">General Admission (₹499)</option>
+                <option value="vip">VIP Pass (₹1,499)</option>
+                <option value="backstage">Backstage Experience (₹3,999)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Preferred Streaming Platform</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="platform" value="youtube" checked> YouTube Live
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="platform" value="twitch"> Twitch
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="platform" value="zoom"> Zoom HD
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="updates" name="updates" value="yes">
+                <label for="updates">Send me updates about future virtual concerts and artist merchandise.</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the event terms and streaming guidelines.</label>
+            </div>
+        </div>
+
+        <button type="submit">Complete Registration</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('registrationForm');
+    const fields = ['fullname', 'email', 'phone', 'ticket-type'];
+
+    window.addEventListener('DOMContentLoaded', () => {
+        fields.forEach(id => {
+            const savedValue = sessionStorage.getItem(id);
+            if (savedValue) {
+                document.getElementById(id).value = savedValue;
+            }
+        });
+
+        const savedPlatform = sessionStorage.getItem('platform');
+        if (savedPlatform) {
+            const radio = document.querySelector(`input[name="platform"][value="${savedPlatform}"]`);
+            if (radio) radio.checked = true;
+        }
+
+        const savedUpdates = sessionStorage.getItem('updates');
+        if (savedUpdates) {
+            document.getElementById('updates').checked = savedUpdates === 'true';
+        }
+    });
+
+    form.addEventListener('input', (e) => {
+        if (e.target.name === 'platform') {
+            sessionStorage.setItem('platform', e.target.value);
+        } else if (e.target.type === 'checkbox') {
+            sessionStorage.setItem(e.target.id, e.target.checked);
+        } else if (fields.includes(e.target.id)) {
+            sessionStorage.setItem(e.target.id, e.target.value);
+        }
+    });
+
+    form.addEventListener('submit', () => {
+        const registrationData = {
+            fullname: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            ticketType: document.getElementById('ticket-type').value,
+            platform: document.querySelector('input[name="platform"]:checked').value,
+            currency: 'INR',
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('lastConfirmedRegistration', JSON.stringify(registrationData));
+        sessionStorage.clear();
+    });
+</script>
+
+</body>
+</html>
