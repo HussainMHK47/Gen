@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart India Hackathon 2026</title>
+    <style>
+        @import url('https://googleapis.com');
+
+        :root {
+            --primary: #0a2540;
+            --secondary: #ff6f00;
+            --accent: #00bcd4;
+            --light-bg: #f8fa9c;
+            --text-dark: #2d3748;
+            --card-border: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: var(--primary);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--card-border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 25px;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a365d 100%);
+            color: #ffffff;
+            padding: 140px 20px 80px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--card-border);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+        }
+
+        .hero h1 span {
+            color: var(--secondary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 20px auto 30px auto;
+            opacity: 0.9;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 4px solid var(--card-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 8px 8px 0px var(--card-border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px var(--card-border);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .card-1 h3 { color: #d9534f; }
+        .card-2 h3 { color: #5cb85c; }
+        .card-3 h3 { color: #6f42c1; }
+
+        .about-box {
+            background: #ffffff;
+            border: 4px solid var(--card-border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 8px 8px 0px var(--card-border);
+            margin-bottom: 60px;
+        }
+
+        .about-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: var(--primary);
+            color: #ffffff;
+            border: 3px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 4px 4px 0px var(--card-border);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: #ffffff;
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 4px solid var(--card-border);
+            margin-top: 80px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo-text">SIH <span>2026</span></div>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#themes">Themes</a>
+                <a href="#achievements">Achievements</a>
+                <a href="#implementations">Implementations</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1>Smart India <span>Hackathon</span></h1>
+        <p>The World's Biggest Open Innovation Model. Empowering young technical minds to solve real-world problem statements from ministries, departments, and top industries.</p>
+    </div>
+
+    <div class="main-container">
+
+        <section id="about" style="scroll-margin-top: 100px;">
+            <h2 class="section-title">About the Initiative</h2>
+            <div class="about-box">
+                <p>Smart India Hackathon is a nationwide initiative by the Ministry of Education's Innovation Cell to provide students with a platform to solve pressing challenges faced in daily operations. It fosters a vibrant culture of product innovation, collaborative development, and problem-solving mindsets among engineering, technology, and management institutes across the nation.</p>
+            </div>
+        </section>
+
+        <section id="themes" style="scroll-margin-top: 100px;">
+            <h2 class="section-title">Focus Themes</h2>
+            <div class="grid">
+                <div class="card card-1">
+                    <h3>Smart Automation</h3>
+                    <p>Focusing on next-generation industrial architectures, IoT ecosystems, predictive maintenance paradigms, and intelligent production line automation frameworks.</p>
+                </div>
+                <div class="card card-2">
+                    <h3>Agriculture & Rural Dev</h3>
+                    <p>Delivering cutting-edge technical infrastructure to operations, smart supply chains, drone analytics, and data-driven yield optimization maps.</p>
+                </div>
+                <div class="card card-3">
+                    <h3>Clean & Green Energy</h3>
+                    <p>Building clean tech solutions aimed at renewable power grids, carbon capture models, battery optimization systems, and smart waste management routines.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="achievements" style="scroll-margin-top: 100px; margin-top: 60px;">
+            <h2 class="section-title">Key Achievements</h2>
+            <div class="about-box">
+                <p>Over successive grand iterations, SIH has catalyzed a significant surge in student-led startups, patent registrations, and commercial product conversions. It has successfully bridged the gap between theoretical classroom code bases and deployment-ready industrial software frameworks.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">5K+</div>
+                        <div class="stat-label">Institutes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Problem Statements</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15K+</div>
+                        <div class="stat-label">Finalists</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="implementations" style="scroll-margin-top: 100px;">
+            <h2 class="section-title">Implementations & Impact</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Enterprise Deployments</h3>
+                    <p>Top winning prototypes are picked up directly by enterprise partners, translating into robust software utilities integrated inside legacy operational ecosystems.</p>
+                </div>
+                <div class="card">
+                    <h3>Government Integration</h3>
+                    <p>Various ministerial applications engineered during the 36-hour sprint phases now power live public-facing national infrastructure portals and internal validation tracking arrays.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Smart India Hackathon Initiative. Built for Educational Demonstration.</p>
+    </footer>
+
+</body>
+</html>
