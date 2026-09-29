@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Info</title>
+  <style>
+    table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+    th { background: #4CAF50; color: white; }
+    form { width: 80%; margin: 20px auto; }
+    form div { margin: 8px 0; }
+    label { display: inline-block; width: 110px; font-weight: bold; }
+    input { padding: 5px; width: 200px; }
+    button { padding: 8px 16px; background: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h2 style="text-align:center">Student Records</h2>
+
+  <form id="studentForm">
+    <div><label>ID</label><input type="number" id="id" required></div>
+    <div><label>Name</label><input type="text" id="name" required></div>
+    <div><label>Age</label><input type="number" id="age" required></div>
+    <div><label>Grade</label><input type="text" id="grade" required></div>
+    <div><label>Subject</label><input type="text" id="subject" required></div>
+    <div><label>Department</label><input type="text" id="department" required></div>
+    <button type="submit">Add Student</button>
+  </form>
+
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Grade</th>
+        <th>Subject</th>
+        <th>Department</th>
+      </tr>
+    </thead>
+    <tbody id="studentBody"></tbody>
+  </table>
+
+  <script>
+    function getStudents() {
+      return JSON.parse(localStorage.getItem("students") || "[]");
+    }
+
+    function saveStudents(students) {
+      localStorage.setItem("students", JSON.stringify(students));
+    }
+
+    function render() {
+      const tbody = document.getElementById("studentBody");
+      tbody.innerHTML = "";
+      getStudents().forEach(s => {
+        const row = document.createElement("tr");
+        row.innerHTML =
+          "<td>" + s.id + "</td>" +
+          "<td>" + s.name + "</td>" +
+          "<td>" + s.age + "</td>" +
+          "<td>" + s.grade + "</td>" +
+          "<td>" + s.subject + "</td>" +
+          "<td>" + s.department + "</td>";
+        tbody.appendChild(row);
+      });
+    }
+
+    document.getElementById("studentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const student = {
+        id: parseInt(document.getElementById("id").value),
+        name: document.getElementById("name").value,
+        age: parseInt(document.getElementById("age").value),
+        grade: document.getElementById("grade").value,
+        subject: document.getElementById("subject").value,
+        department: document.getElementById("department").value
+      };
+      const students = getStudents();
+      students.push(student);
+      saveStudents(students);
+      render();
+      this.reset();
+    });
+
+    render();
+  </script>
+
+</body>
+</html>   

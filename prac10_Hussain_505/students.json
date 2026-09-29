@@ -1,0 +1,7 @@
+{
+  "students": [
+    { "id": 1, "name": "Aarav", "age": 17, "grade": "A", "subject": "Math", "department": "CSE" },
+    { "id": 2, "name": "Diya",  "age": 16, "grade": "B", "subject": "Science", "department": "ECE" },
+    { "id": 3, "name": "Rohan", "age": 18, "grade": "A+", "subject": "English", "department": "ME" }
+  ]
+}   
